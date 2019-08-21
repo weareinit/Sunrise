@@ -1,2 +1,2 @@
 # sunrise
-🌅 A QR focused check-in and redemption webapp
+🌅 A QR code focused check-in and redemption webapp

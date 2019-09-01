@@ -1,5 +1,6 @@
 import React from 'reactn';
 import QrReader from 'react-qr-reader'
+import axios from 'axios';
 
 class QR extends React.Component
 {
@@ -15,23 +16,32 @@ class QR extends React.Component
 
             // The auth QR code is Base64 encoded, which is how we know 
             // it's the auth QR code
-            let isAuthToken = false;
-            let authToken;
+            let isBase64 = false;
+            let authJson;
             try{
-                authToken = JSON.parse(atob(data));
+                authJson = JSON.parse(atob(data));
 
-                isAuthToken = true;
+                isBase64 = true;
             } catch(e)
             {
                 console.log(e);
             }
 
             //Store the auth token in the state and localStorage
-            if(isAuthToken){
+            if(isBase64){
                 try
                 {
-                    this.setGlobal({ authToken });
-                    window.localStorage.setItem("authToken", JSON.stringify(authToken));
+                    if(typeof authJson.password == "undefined")
+                        throw new Error("Auth json is incorrect.");
+                    
+                    axios.post("https://api.shellhacks.net/token",authJson)
+                        .then(res => {
+                            console.log(res);
+                            const authToken = res.data.data;
+                            this.setGlobal({ authToken });
+                            window.localStorage.setItem("authToken", JSON.stringify(authToken));
+                        })
+                    
                 }
                 catch(e)
                 {

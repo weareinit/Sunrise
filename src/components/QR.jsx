@@ -40,6 +40,10 @@ class QR extends React.Component
                             const authToken = res.data.data;
                             this.setGlobal({ authToken });
                             window.localStorage.setItem("authToken", JSON.stringify(authToken));
+                        }).finally(() => {
+                            setTimeout(() => {
+                                this.setGlobal({codeScanned: false})
+                            }, 1000)
                         })
                     
                 }

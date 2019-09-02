@@ -36,7 +36,6 @@ class QR extends React.Component
                     
                     axios.post("https://api.shellhacks.net/token",authJson)
                         .then(res => {
-                            console.log(res);
                             const authToken = res.data.data;
                             this.setGlobal({ authToken });
                             window.localStorage.setItem("authToken", JSON.stringify(authToken));
@@ -51,9 +50,10 @@ class QR extends React.Component
                 {
                     console.log(e);
                 }
-            // Or simply store the data in the global state
+            // Or check if the shell ID exists
             } else {
-                this.setGlobal({ data })
+                this.setGlobal({ shellID: data });
+                setTimeout(() => {this.setGlobal({codeScanned: false})}, 1000)
             }
         }
     }

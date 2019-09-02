@@ -1,11 +1,13 @@
-import React from 'reactn';
-import Modal from './Modal'
+import React, { useGlobal } from 'reactn';
+import ModalRoot from './ModalRoot'
 
 function InfoPanel(){
     // eslint-disable-next-line
+    const [currentModal, setCurrentModal] = useGlobal('currentModal');
+
     return (
         <div className="content">
-            <Modal />
+            <ModalRoot activeModal={currentModal}/>
         </div>
     );
 }

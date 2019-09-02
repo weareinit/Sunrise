@@ -1,16 +1,23 @@
-import React from 'reactn';
+import React from 'react';
 
-class Modal extends React.Component{
-    render(){
-        const { codeScanned, data } = this.global;
-        return (
-            <div className="modal">
-                <h1>Hello Worlds!</h1>
-                <p>{ codeScanned.toString() }</p>
-                <p>{ data }</p>
+function Modal({children, actions}){
+    return (
+        <div className="modal">
+            
+            <div className="modal-content">
+                {children}
             </div>
-        )
-    }
+            {
+                (actions) ? (
+                    <div className="actions">
+                        {actions.map((action) => 
+                           <button onClick={action.action}>{action.name}</button> 
+                        )}
+                    </div>
+                ) : (null)
+            }
+        </div>
+    );
 }
 
 export default Modal;

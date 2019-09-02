@@ -14,6 +14,7 @@
 .app .reader{
   width: 100vh;
   max-width: 100vw;
+  flex-shrink: 0;
 }
 
 .app .modal {

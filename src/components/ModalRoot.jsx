@@ -8,13 +8,17 @@ export const modalTypes = {
 
 class ModalRoot extends React.Component{
 
+    checkInUser(){
+        console.log("testing check in")
+    }
+
     selectModal(modalType){
         
         let resultModal = null;
         let actions;
+        const { codeScanned, shellID, user } = this.global;
         switch(modalType){
             case modalTypes.LANDING:
-                const { codeScanned, shellID } = this.global;
                 actions = [
                     {
                         name: "User Info",
@@ -22,10 +26,10 @@ class ModalRoot extends React.Component{
                     }
                 ]
                 resultModal = (
-                    <Modal actions={actions}>
-                        <h1>Hello Worlds!</h1>
-                        <p>{ codeScanned.toString() }</p>
-                        <p>{ shellID }</p>
+                    <Modal >
+                        <h1>Welcome to ShellHacks!</h1>
+                        <p>Scan your ShellID to start...</p>
+                        <p>{ codeScanned.toString() } { shellID }</p>
                     </Modal>
                 );    
             break;
@@ -34,11 +38,18 @@ class ModalRoot extends React.Component{
                     {
                         name: "Cancel",
                         action: () => this.setGlobal({currentModal: modalTypes.LANDING})
+                    },
+                    {
+                        name: "Check In",
+                        action: this.checkInUser
                     }
                 ]
                 resultModal = (
                     <Modal actions={actions}>
                         <h1>User Info</h1>
+                        <ul>
+                            <li>{`${JSON.stringify(user)}`}</li>
+                        </ul>
                     </Modal>
                 );
             break;

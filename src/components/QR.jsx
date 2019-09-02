@@ -1,6 +1,7 @@
 import React from 'reactn';
 import QrReader from 'react-qr-reader'
 import axios from 'axios';
+import { modalTypes } from './ModalRoot';
 
 class QR extends React.Component
 {
@@ -53,7 +54,32 @@ class QR extends React.Component
             // Or check if the shell ID exists
             } else {
                 this.setGlobal({ shellID: data });
-                setTimeout(() => {this.setGlobal({codeScanned: false})}, 1000)
+                const { shellID, authToken } = this.global;
+                axios.post("https://api.shellhacks.net/admin/readOne",
+                    { shellID },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authToken.token}`
+                        }
+                    }
+                )
+                .then((res) => {
+                    const { data } = res.data;
+                    
+                    if(!data.checkIn){
+                        throw new Error("User is already checked in.")
+                    }
+                    
+                    this.setGlobal({user: data, currentModal: modalTypes.USER_INFO})
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        this.setGlobal({codeScanned: false})
+                    }, 1000)
+                })
             }
         }
     }

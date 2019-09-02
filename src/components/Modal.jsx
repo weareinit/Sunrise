@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useGlobal } from 'reactn';
+import classNames from 'classnames';
 
 function Modal({children, actions}){
+    const [currentModal, setCurrentModal] = useGlobal('currentModal');
     return (
-        <div className="modal">
+        <div className={classNames('modal', currentModal)}>
             
             <div className="modal-content">
                 {children}

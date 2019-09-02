@@ -2348,6 +2348,11 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+classnames@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
+  integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
+
 clean-css@4.2.x:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.2.1.tgz#2d411ef76b8569b6d0c84068dabe85b0aa5e5c17"
@@ -7930,6 +7935,13 @@ react-is@^16.8.1, react-is@^16.8.4:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
   integrity sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
+
+react-notifications-component@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/react-notifications-component/-/react-notifications-component-2.0.7.tgz#b30ec2456a9be7b9509fed5fd716965a9aade3ed"
+  integrity sha512-nVjqfMW6Cmzx47iqbfocYGYNjEenI8B9jr7nFtkqoHRFClZjghTCMGFIv6YA4IFujWoQh5SyzTnD+G0GPFKqrg==
+  dependencies:
+    prop-types "^15.6.2"
 
 react-qr-reader@^2.2.1:
   version "2.2.1"

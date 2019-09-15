@@ -1,16 +1,28 @@
 .app {
   display: flex;
-  flex-direction: row
+  flex-direction: row;
+  background: #fbedca
 }
 
 .app .content{
   flex-grow: 1;
   flex-shrink: 2;
+  margin: 40px;
+
 }
 
 .app .reader{
   width: 100vh;
   max-width: 100vw;
+  flex-shrink: 0;
+}
+
+.app .modal {
+  padding: 20px;
+  height: 100%;
+  box-sizing: border-box;
+  background: #e1d5b5;
+  border-radius: 10px;
 }
 
 @media(max-width: 500px){

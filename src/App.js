@@ -10,7 +10,7 @@ const authToken = JSON.parse(window.localStorage.getItem("authToken"));
 setGlobal(
   {
     ...INITIAL_STATE,
-    authToken
+    authToken,
   }
 );
 

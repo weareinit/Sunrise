@@ -30,7 +30,7 @@ class ModalRoot extends React.Component {
                 resultModal = (
                     <Modal >
                         <h1>Welcome to ShellHacks!</h1>
-                        <p>Scan your ShellID to start...</p>
+                        <p>Scan ShellID™ to start...</p>
                         <p>{codeScanned.toString()} {shellID}</p>
                     </Modal>
                 );

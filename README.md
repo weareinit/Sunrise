@@ -15,3 +15,10 @@
 0. Run `yarn start`
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+# To Do's
+- [ ] Retrieve and store the event list on load
+- [ ] Avatar group at Check In
+- [ ] Generic Event Check in
+    - [ ] Settings Modal Only, notification to make sure they checked in sucessfully
+- [ ] Wav-ify the page

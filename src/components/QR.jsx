@@ -66,7 +66,7 @@ class QR extends React.Component
                 .then((res) => {
                     const { data } = res.data;
                     
-                    if(!data.checkIn){
+                    if(data.checkIn){
                         throw new Error("User is already checked in.")
                     }
                     

@@ -3,6 +3,7 @@ import QrReader from 'react-qr-reader'
 import axios from 'axios';
 import { modalTypes } from './ModalRoot';
 import { store } from 'react-notifications-component';
+import { ENDPOINTS } from '../utils';
 
 class QR extends React.Component {
 
@@ -54,7 +55,7 @@ class QR extends React.Component {
                         }
                     });
 
-                    axios.post("https://api.shellhacks.net/token", authJson)
+                    axios.post(ENDPOINTS.TOKEN, authJson)
                         .then(res => {
                             const authToken = res.data.data;
                             this.setGlobal({ authToken });
@@ -100,6 +101,26 @@ class QR extends React.Component {
             } else {
                 this.setGlobal({ shellID: data });
                 const { shellID, authToken } = this.global;
+
+                if(!authToken){
+                    store.addNotification({
+                        title: "Error",
+                        message: "Please authenticate before scanning IDs",
+                        type: "danger",
+                        insert: "bottom",
+                        container: "bottom-center",
+                        animationIn: ["animated", "fadeIn"],
+                        animationOut: ["animated", "fadeOut"],
+                        dismiss: {
+                            duration: 5000,
+                            onScreen: true
+                        }
+                    });
+                    this.setGlobal({ codeScanned: false })
+                    return;
+                    // throw new Error("Not Authenticated");
+                }
+
                 axios.post("https://api.shellhacks.net/admin/readOne",
                     { shellID },
                     {
@@ -112,6 +133,19 @@ class QR extends React.Component {
                         const { data } = res.data;
 
                         if (data.checkIn) {
+                            store.addNotification({
+                                title: "Check In Error",
+                                message: "User is already checked in",
+                                type: "danger",
+                                insert: "bottom",
+                                container: "bottom-center",
+                                animationIn: ["animated", "fadeIn"],
+                                animationOut: ["animated", "fadeOut"],
+                                dismiss: {
+                                    duration: 5000,
+                                    onScreen: true
+                                }
+                            });
                             throw new Error("User is already checked in.")
                         }
 

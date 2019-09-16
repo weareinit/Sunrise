@@ -1,5 +1,6 @@
 import React, { useGlobal } from 'reactn';
 import classNames from 'classnames';
+import { store } from 'react-notifications-component'
 
 function Modal({children, actions}){
     const [currentModal, setCurrentModal] = useGlobal('currentModal');
@@ -13,7 +14,7 @@ function Modal({children, actions}){
                 (actions) ? (
                     <div className="actions">
                         {actions.map((action) => 
-                           <button onClick={action.action}>{action.name}</button> 
+                           <a href="#" className="button" onClick={action.action}>{action.name}</a> 
                         )}
                     </div>
                 ) : (null)

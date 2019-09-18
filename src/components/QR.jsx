@@ -121,7 +121,7 @@ class QR extends React.Component {
                     // throw new Error("Not Authenticated");
                 }
 
-                axios.post("https://api.shellhacks.net/admin/readOne",
+                axios.post(ENDPOINTS.HACKER_DATA,
                     { shellID },
                     {
                         headers: {
@@ -147,6 +147,21 @@ class QR extends React.Component {
                                 }
                             });
                             throw new Error("User is already checked in.")
+                        } else if (data.applicationStatus != "confirmed") {
+                            store.addNotification({
+                                title: "Check In Error",
+                                message: `User is not confirmed! Status is: ${data.applicationStatus}`,
+                                type: "danger",
+                                insert: "bottom",
+                                container: "bottom-center",
+                                animationIn: ["animated", "fadeIn"],
+                                animationOut: ["animated", "fadeOut"],
+                                dismiss: {
+                                    duration: 5000,
+                                    onScreen: true
+                                }
+                            });
+                            throw new Error("User is not confirmed.")
                         }
 
                         this.setGlobal({ user: data, currentModal: modalTypes.USER_INFO })
@@ -165,13 +180,16 @@ class QR extends React.Component {
 
     render() {
         return (
-            <QrReader
-                showViewFinder={true}
-                facingMode="environment"
-                className="reader"
-                resolution={800}
-                onScan={this.handleScan}
-            />
+            <div style={{position: "relative"}}>
+                <span style={{position: "absolute", zIndex: 2}}>{(this.global.codeScanned) ? "🛑" : "👌🏼"}</span>
+                <QrReader
+                    showViewFinder={true}
+                    facingMode="environment"
+                    className="reader"
+                    resolution={800}
+                    onScan={this.handleScan}
+                />
+            </div>
         );
     }
 }

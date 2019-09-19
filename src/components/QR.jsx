@@ -116,7 +116,9 @@ class QR extends React.Component {
                             onScreen: true
                         }
                     });
-                    this.setGlobal({ codeScanned: false })
+                    setTimeout(() => {
+                        this.setGlobal({ codeScanned: false })
+                    }, 1000)
                     return;
                     // throw new Error("Not Authenticated");
                 }
@@ -147,7 +149,7 @@ class QR extends React.Component {
                                 }
                             });
                             throw new Error("User is already checked in.")
-                        } else if (data.applicationStatus != "confirmed") {
+                        } else if (data.applicationStatus !== "confirmed") {
                             store.addNotification({
                                 title: "Check In Error",
                                 message: `User is not confirmed! Status is: ${data.applicationStatus}`,

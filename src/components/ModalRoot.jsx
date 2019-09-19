@@ -3,6 +3,7 @@ import Modal from './Modal'
 import axios from 'axios'
 import { getWave, ENDPOINTS } from '../utils'
 import { store } from 'react-notifications-component'
+import moment from 'moment'
 
 export const modalTypes = {
     LANDING: 'landing-modal',
@@ -102,6 +103,20 @@ class ModalRoot extends React.Component {
                         <p>{user.schoolName}</p>
                         <h2>Date of Birth</h2>
                         <p>{user.dob}</p>
+                    </Modal>
+                );
+                break;
+            case modalTypes.EVENT_CHECKIN:
+                const { events } = this.global;
+                resultModal = (
+                    <Modal>
+                        <h1>Event Check-In</h1>
+                        <select name="events" id="event-select" onChange={(e) => this.setGlobal({currentEventID: e.target.value})}>
+                            <option value="">Select Event</option>
+                            {events.map((event) => 
+                                <option value={event.id}>{event.title} ({moment(event.startTime).format("ddd Do h:mmA")})</option>
+                            )}
+                        </select>
                     </Modal>
                 );
                 break;

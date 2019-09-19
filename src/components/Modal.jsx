@@ -1,6 +1,5 @@
 import React, { useGlobal } from 'reactn';
 import classNames from 'classnames';
-import { store } from 'react-notifications-component'
 
 function Modal({children, actions}){
     const [currentModal, setCurrentModal] = useGlobal('currentModal');

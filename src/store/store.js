@@ -6,5 +6,7 @@ export const INITIAL_STATE = {
     currentModal: modalTypes.LANDING,
     shellID: "",
     user: null,
-    checkInError: ""
+    checkInError: "",
+    events: [],
+    currentEventID: ""
 }

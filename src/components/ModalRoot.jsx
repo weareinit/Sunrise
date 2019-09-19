@@ -1,7 +1,7 @@
 import React from 'reactn';
 import Modal from './Modal'
 import axios from 'axios'
-import { getWave, ENDPOINTS } from '../utils'
+import { getWave, ENDPOINTS, NON_EVENTS } from '../utils'
 import { store } from 'react-notifications-component'
 import moment from 'moment'
 
@@ -71,6 +71,10 @@ class ModalRoot extends React.Component {
                     {
                         name: "Event Check-In",
                         action: () => this.setGlobal({ currentModal: modalTypes.EVENT_CHECKIN })
+                    },
+                    {
+                        name: "Clear Auth",
+                        action: () => this.setGlobal({authToken: null})
                     }
                 ]
                 resultModal = (
@@ -84,7 +88,7 @@ class ModalRoot extends React.Component {
                 actions = [
                     {
                         name: "Cancel",
-                        action: () => this.setGlobal({ currentModal: modalTypes.LANDING })
+                        action: () => this.setGlobal({ currentModal: modalTypes.LANDING, codeScanned: false })
                     },
                     {
                         name: "Check In",
@@ -113,8 +117,8 @@ class ModalRoot extends React.Component {
                         <h1>Event Check-In</h1>
                         <select name="events" id="event-select" onChange={(e) => this.setGlobal({currentEventID: e.target.value})}>
                             <option value="">Select Event</option>
-                            {events.map((event) => 
-                                <option value={event.id}>{event.title} ({moment(event.startTime).format("ddd Do h:mmA")})</option>
+                            {events.filter((event) => !NON_EVENTS.includes(event._id)).map((event) => 
+                                <option value={event.id}>{event.title} ({moment(event.startTime).format("ddd Do @ h:mmA")})</option>
                             )}
                         </select>
                     </Modal>

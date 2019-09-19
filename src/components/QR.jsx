@@ -6,13 +6,148 @@ import { store } from 'react-notifications-component';
 import { ENDPOINTS } from '../utils';
 
 class QR extends React.Component {
+    constructor(){
+        super()
+        this.resetScanner = this.resetScanner.bind(this)
+        this.hackerCheckIn = this.hackerCheckIn.bind(this)
+        this.generalCheckIn = this.generalCheckIn.bind(this)
+    }
+
+    resetScanner(){
+        setTimeout(() => {
+            this.setGlobal({ codeScanned: false })
+        }, 1000)
+    }
 
     hackerCheckIn = () => {
+        const { shellID, authToken } = this.global;
+        if (!authToken) {
+            store.addNotification({
+                title: "Error",
+                message: "Please authenticate before scanning IDs",
+                type: "danger",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 5000,
+                    onScreen: true
+                }
+            });
+            this.resetScanner();
+            return;
+            // throw new Error("Not Authenticated");
+        }
 
+        axios.post(ENDPOINTS.HACKER_DATA,
+            { shellID },
+            {
+                headers: {
+                    Authorization: `Bearer ${authToken.token}`
+                }
+            })
+            .then((res) => {
+                const { data } = res.data;
+
+                if (data.checkIn) {
+                    store.addNotification({
+                        title: "Check In Error",
+                        message: "User is already checked in",
+                        type: "danger",
+                        insert: "bottom",
+                        container: "bottom-center",
+                        animationIn: ["animated", "fadeIn"],
+                        animationOut: ["animated", "fadeOut"],
+                        dismiss: {
+                            duration: 5000,
+                            onScreen: true
+                        }
+                    });
+                    throw new Error("User is already checked in.")
+                } else if (data.applicationStatus !== "confirmed") {
+                    store.addNotification({
+                        title: "Check In Error",
+                        message: `User is not confirmed! Status is: ${data.applicationStatus}`,
+                        type: "danger",
+                        insert: "bottom",
+                        container: "bottom-center",
+                        animationIn: ["animated", "fadeIn"],
+                        animationOut: ["animated", "fadeOut"],
+                        dismiss: {
+                            duration: 5000,
+                            onScreen: true
+                        }
+                    });
+                    throw new Error("User is not confirmed.")
+                }
+
+                this.setGlobal({ user: data, currentModal: modalTypes.USER_INFO })
+            })
+            .catch((e) => {
+                console.log(e)
+            })
     }
 
     generalCheckIn = () => {
-        
+        if(this.global.currentEventID == ""){
+            store.addNotification({
+                title: "Error",
+                message: `Select an event!`,
+                type: "danger",
+                insert: "bottom",
+                container: "bottom-center",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: {
+                    duration: 5000,
+                    onScreen: true
+                }
+            });
+            this.resetScanner();
+        } else {
+            const { shellID, currentEventID: eventID, authToken } = this.global;
+            axios.put(ENDPOINTS.EVENT_CHECK_IN, {
+                shellID,
+                eventID
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${authToken.token}`
+                }
+            })
+            .then(res => {
+                store.addNotification({
+                    message: `Successfully checked in ShellID: ${shellID}!`,
+                    type: "success",
+                    insert: "bottom",
+                    container: "bottom-center",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 5000,
+                        onScreen: true
+                    }
+                });
+            })
+            .catch((err) => {
+                let info = err.response.data.error || err;
+                store.addNotification({
+                    title: "Error from Server",
+                    message: `${info}`,
+                    type: "danger",
+                    insert: "bottom",
+                    container: "bottom-center",
+                    animationIn: ["animated", "fadeIn"],
+                    animationOut: ["animated", "fadeOut"],
+                    dismiss: {
+                        duration: 5000,
+                        onScreen: true
+                    }
+                });
+            })
+            .finally(this.resetScanner)
+        }
     }
 
     handleScan = data => {
@@ -73,11 +208,9 @@ class QR extends React.Component {
                                     onScreen: true
                                 }
                             });
-                        }).finally(() => {
-                            setTimeout(() => {
-                                this.setGlobal({ codeScanned: false })
-                            }, 1000)
-                        }).catch(err => {
+                        })
+                        .finally(this.resetScanner)
+                        .catch(err => {
                             store.addNotification({
                                 title: "Error",
                                 message: `Authentication failed: ${err}`,
@@ -97,93 +230,22 @@ class QR extends React.Component {
                 catch (e) {
                     console.log(e);
                 }
-                // Or check if the shell ID exists
+            // Or check if the shell ID exists
             } else {
                 this.setGlobal({ shellID: data });
-                const { shellID, authToken } = this.global;
-
-                if(!authToken){
-                    store.addNotification({
-                        title: "Error",
-                        message: "Please authenticate before scanning IDs",
-                        type: "danger",
-                        insert: "bottom",
-                        container: "bottom-center",
-                        animationIn: ["animated", "fadeIn"],
-                        animationOut: ["animated", "fadeOut"],
-                        dismiss: {
-                            duration: 5000,
-                            onScreen: true
-                        }
-                    });
-                    setTimeout(() => {
-                        this.setGlobal({ codeScanned: false })
-                    }, 1000)
-                    return;
-                    // throw new Error("Not Authenticated");
+                if (this.global.currentModal == modalTypes.EVENT_CHECKIN) {
+                    this.generalCheckIn();
+                } else {
+                    this.hackerCheckIn();
                 }
-
-                axios.post(ENDPOINTS.HACKER_DATA,
-                    { shellID },
-                    {
-                        headers: {
-                            Authorization: `Bearer ${authToken.token}`
-                        }
-                    }
-                )
-                    .then((res) => {
-                        const { data } = res.data;
-
-                        if (data.checkIn) {
-                            store.addNotification({
-                                title: "Check In Error",
-                                message: "User is already checked in",
-                                type: "danger",
-                                insert: "bottom",
-                                container: "bottom-center",
-                                animationIn: ["animated", "fadeIn"],
-                                animationOut: ["animated", "fadeOut"],
-                                dismiss: {
-                                    duration: 5000,
-                                    onScreen: true
-                                }
-                            });
-                            throw new Error("User is already checked in.")
-                        } else if (data.applicationStatus !== "confirmed") {
-                            store.addNotification({
-                                title: "Check In Error",
-                                message: `User is not confirmed! Status is: ${data.applicationStatus}`,
-                                type: "danger",
-                                insert: "bottom",
-                                container: "bottom-center",
-                                animationIn: ["animated", "fadeIn"],
-                                animationOut: ["animated", "fadeOut"],
-                                dismiss: {
-                                    duration: 5000,
-                                    onScreen: true
-                                }
-                            });
-                            throw new Error("User is not confirmed.")
-                        }
-
-                        this.setGlobal({ user: data, currentModal: modalTypes.USER_INFO })
-                    })
-                    .catch((e) => {
-                        console.log(e)
-                    })
-                    .finally(() => {
-                        setTimeout(() => {
-                            this.setGlobal({ codeScanned: false })
-                        }, 1000)
-                    })
             }
         }
     }
 
     render() {
         return (
-            <div style={{position: "relative"}}>
-                <span style={{position: "absolute", zIndex: 2}}>{(this.global.codeScanned) ? "🛑" : "👌🏼"}</span>
+            <div style={{ position: "relative" }}>
+                <span style={{ position: "absolute", zIndex: 2, left: "50%", top: "50%", transform: "translate(-50%, -50%)", fontSize: "10em" }}>{(this.global.codeScanned) ? "🛑" : "👌🏼"}</span>
                 <QrReader
                     showViewFinder={true}
                     facingMode="environment"

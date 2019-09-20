@@ -107,6 +107,8 @@ class ModalRoot extends React.Component {
                         <p>{user.schoolName}</p>
                         <h2>Date of Birth</h2>
                         <p>{moment(user.dob).format("MM/DD/YYYY").toString()}</p>
+                        <h2>Level of Study</h2>
+                        <p>{user.levelOdStudy}</p>
                     </Modal>
                 );
                 break;

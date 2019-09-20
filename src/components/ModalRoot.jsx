@@ -98,15 +98,13 @@ class ModalRoot extends React.Component {
                 resultModal = (
                     <Modal actions={actions}>
                         <h1>User Info</h1>
-                        <h2>Wave {getWave(user.avatarID)}</h2>
-                        <h2>First Name</h2>
-                        <p>{user.firstName}</p>
-                        <h2>Last Name</h2>
-                        <p>{user.lastName}</p>
+                        <h2>Wave <span style={{fontWeight: "bolder", textDecoration: "underline"}}>{getWave(user.avatarID)}</span></h2>
+                        <h2>Full Name</h2>
+                        <p>{user.firstName} {user.lastName}</p>
                         <h2>School</h2>
                         <p>{user.schoolName}</p>
                         <h2>Date of Birth</h2>
-                        <p>{user.dob}</p>
+                        <p>{moment(user.dob).format("MM/DD/YYYY").toString()}</p>
                     </Modal>
                 );
                 break;

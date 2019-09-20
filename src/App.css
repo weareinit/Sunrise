@@ -8,13 +8,7 @@
   flex-grow: 1;
   flex-shrink: 2;
   margin: 40px;
-
-}
-
-.app .reader{
-  width: 100vh;
-  max-width: 100vw;
-  flex-shrink: 0;
+  height: 100%;
 }
 
 .app .modal {
@@ -28,6 +22,30 @@
 #event-select {
   width: 100%;
   font-size: 2em
+}
+
+.reader-container {
+  transition: height .3s ease;
+  overflow: hidden;
+  display: block;
+  width: 100vh;
+  max-width: 100vw;
+  flex-shrink: 0;
+  height: 100vw;
+}
+
+.reader-container.hide{
+  height: 0px;
+}
+
+.user-info-modal p{
+  font-size: 1.25em;
+  margin-bottom: .2em;
+  font-weight: bold
+}
+
+.user-info-modal h2:not(:first-of-type){
+  text-decoration: underline
 }
 
 .actions {

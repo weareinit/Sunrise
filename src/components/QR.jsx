@@ -4,6 +4,7 @@ import axios from 'axios';
 import { modalTypes } from './ModalRoot';
 import { store } from 'react-notifications-component';
 import { ENDPOINTS } from '../utils';
+import classNames from 'classnames'
 
 class QR extends React.Component {
     constructor(){
@@ -135,7 +136,7 @@ class QR extends React.Component {
                 let info = err.response.data.error || err;
                 store.addNotification({
                     title: "Error from Server",
-                    message: `${info}`,
+                    message: `${info} \n ShellID: ${shellID}`,
                     type: "danger",
                     insert: "bottom",
                     container: "bottom-center",
@@ -245,7 +246,7 @@ class QR extends React.Component {
 
     render() {
         return (
-            <div style={{ position: "relative" }}>
+            <div className={classNames("reader-container", (this.global.currentModal == modalTypes.USER_INFO && this.global.codeScanned && "hide") )} style={{ position: "relative" }}>
                 <span style={{ position: "absolute", zIndex: 2, left: "50%", top: "50%", transform: "translate(-50%, -50%)", fontSize: "10em" }}>{(this.global.codeScanned) ? "🛑" : "👌🏼"}</span>
                 <QrReader
                     showViewFinder={true}

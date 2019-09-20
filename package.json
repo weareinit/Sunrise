@@ -15,6 +15,7 @@
     "reactn": "^2.2.0"
   },
   "scripts": {
+    "restart": "react-scripts build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

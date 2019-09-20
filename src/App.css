@@ -30,6 +30,36 @@
   font-size: 2em
 }
 
+.actions {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-column-gap: 25px;
+  bottom: 20px;
+  align-items: center
+}
+
+.event-checkin-modal .actions{
+  grid-template-columns: auto;
+}
+
+a.button {
+  text-decoration: none;
+  background: #665b50;
+  padding: 20px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 50px
+}
+
+.app .modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content {flex-grow: 1;}
+
 @media(max-width: 500px){
   .app{
     flex-direction: column;

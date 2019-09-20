@@ -112,8 +112,14 @@ class ModalRoot extends React.Component {
                 break;
             case modalTypes.EVENT_CHECKIN:
                 const { events } = this.global;
+                actions = [
+                    {
+                        name: "Home",
+                        action: () => this.setGlobal({ currentModal: modalTypes.LANDING })
+                    }
+                ]
                 resultModal = (
-                    <Modal>
+                    <Modal actions={actions}>
                         <h1>Event Check-In</h1>
                         <select name="events" id="event-select" onChange={(e) => this.setGlobal({currentEventID: e.target.value})}>
                             <option value="">Select Event</option>

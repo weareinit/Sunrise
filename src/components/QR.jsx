@@ -85,7 +85,8 @@ class QR extends React.Component {
                 this.setGlobal({ user: data, currentModal: modalTypes.USER_INFO })
             })
             .catch((e) => {
-                console.log(e)
+                console.log(e);
+                this.resetScanner();
             })
     }
 

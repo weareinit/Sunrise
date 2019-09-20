@@ -80,7 +80,9 @@ class ModalRoot extends React.Component {
                 resultModal = (
                     <Modal actions={actions}>
                         <h1>Welcome to ShellHacks!</h1>
-                        <p>Scan ShellID™ to start...</p>
+                        <div className="start-msg">
+                            <span>Scan ShellID™ to start...</span>
+                        </div>
                     </Modal>
                 );
                 break;
